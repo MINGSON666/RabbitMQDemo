@@ -20,10 +20,9 @@ namespace Consumer
 
             //创建连接
             var connection = factory.CreateConnection();
-            var connection2 = factory.CreateConnection();
             //创建通道
             var channel = connection.CreateModel();
-            var channel2 = connection2.CreateModel();
+            var channel2 = connection.CreateModel();
 
             //事件基本消费者
             EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
@@ -54,9 +53,9 @@ namespace Consumer
             //启动消费者 设置为手动应答消息
             //channel.BasicConsume("hello", false, consumer);// hello
             //channel.BasicConsume("directQueue", false, consumer);// Direct模式
-            //channel.BasicConsume("fanoutQueue1", false, consumer);// Fanout模式
-            //channel.BasicConsume("fanoutQueue2", false, consumer2);// Fanout模式
-            channel.BasicConsume("topicQueue", false, consumer);// Topic模式
+            channel.BasicConsume("fanoutQueue1", false, consumer);// Fanout模式
+            channel.BasicConsume("fanoutQueue2", false, consumer2);// Fanout模式
+            //channel.BasicConsume("topicQueue", false, consumer);// Topic模式
 
             Console.WriteLine("消费者已启动");
             Console.ReadKey();
