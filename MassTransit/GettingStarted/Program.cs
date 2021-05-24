@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MassTransit;
 
 namespace GettingStarted
 {
@@ -18,6 +15,22 @@ namespace GettingStarted
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddMassTransit(x =>
+                    {
+                        x.AddConsumer<MessageConsumer>();
+
+                        //x.UsingInMemory((context, cfg) =>
+                        //{
+                        //    cfg.ConfigureEndpoints(context);
+                        //});
+
+                        x.UsingRabbitMq((context, cfg) =>
+                        {
+                            cfg.ConfigureEndpoints(context);
+                        });
+                    });
+                    services.AddMassTransitHostedService(true);
+
                     services.AddHostedService<Worker>();
                 });
     }
